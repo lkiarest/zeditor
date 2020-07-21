@@ -1,4 +1,4 @@
-import { icons } from 'prosemirror-menu'
+import icons from '../icons'
 import { wrapItem } from '../utils'
 
 export default {
@@ -6,6 +6,6 @@ export default {
   title: '引用',
   icon: icons.blockquote,
   create (schema) {
-    return wrapItem(schema.marks[this.type], { title: this.title, icon: this.icon })
+    return wrapItem(schema.nodes[this.type], { title: this.title, icon: this.icon })
   }
 }

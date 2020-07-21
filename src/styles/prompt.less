@@ -1,0 +1,104 @@
+.zeditor-prompt {
+  min-width: 400px;
+  background: white;
+  padding: 5px 10px 5px 15px;
+  border: 1px solid silver;
+  position: fixed;
+  border-radius: 3px;
+  font-size: 16px;
+  z-index: 11;
+  box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
+}
+
+.zeditor-prompt h5 {
+  padding: 12px 12px 10px;
+  margin: 0;
+  font-weight: normal;
+  font-size: 100%;
+  color: #444;
+}
+
+.zeditor-prompt__body {
+  padding: 0 12px;
+}
+
+.zeditor-prompt input[type="text"],
+.zeditor-prompt textarea {
+  margin-top: 4px;
+  -webkit-appearance: none;
+  background-color: #fff;
+  background-image: none;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: 14px;
+  height: 40px;
+  line-height: 40px;
+  outline: none;
+  padding: 0 15px;
+  transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+  width: 100%;
+  text-indent: 4px;
+}
+
+.zeditor-prompt input[type="text"] {
+  padding: 0 4px;
+}
+
+.zeditor-prompt__close {
+  position: absolute;
+  left: 2px; top: 1px;
+  color: #666;
+  border: none; background: transparent; padding: 0;
+}
+
+.zeditor-prompt__close:after {
+  content: "✕";
+  font-size: 12px;
+}
+
+.zeditor-prompt__invalid {
+  background: #ffc;
+  border: 1px solid #cc7;
+  border-radius: 4px;
+  padding: 5px 10px;
+  position: absolute;
+  min-width: 10em;
+}
+
+.zeditor-prompt__buttons {
+  margin-top: 5px;
+  padding: 8px 12px;
+  text-align: right;
+}
+
+.zeditor-prompt__btn {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+
+  &.zeditor-prompt__btn--primary {
+    color: #fff;
+    background-color: #409eff;
+    border-color: #409eff;
+  }
+}

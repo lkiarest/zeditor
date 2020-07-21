@@ -1,4 +1,4 @@
-import { icons } from 'prosemirror-menu'
+import icons from '../icons'
 import { insertImageItem } from '../utils'
 
 export default {
@@ -6,6 +6,6 @@ export default {
   title: '图片',
   icon: icons.image,
   create (schema) {
-    return insertImageItem(schema.nodes[this.type], this.title)
+    return insertImageItem(schema.nodes[this.type], this.title, this.icon)
   }
 }

@@ -1,4 +1,8 @@
-const prefix = 'ProseMirror-prompt'
+const prefix = 'zeditor-prompt'
+
+const pc = (className) => {
+  return `${prefix}${className}`
+}
 
 export function openPrompt(options) {
   const wrapper = document.body.appendChild(document.createElement('div'))
@@ -16,21 +20,25 @@ export function openPrompt(options) {
 
   const submitButton = document.createElement('button')
   submitButton.type = 'submit'
-  submitButton.className = prefix + '-submit'
-  submitButton.textContent = 'OK'
+  submitButton.className = pc('__btn--primary') + ' ' + pc('__btn')
+  submitButton.textContent = '确定'
   const cancelButton = document.createElement('button')
   cancelButton.type = 'button'
-  cancelButton.className = prefix + '-cancel'
-  cancelButton.textContent = 'Cancel'
+  cancelButton.className = pc('__btn--default') + ' ' + pc('__btn')
+  cancelButton.textContent = '取消'
   cancelButton.addEventListener('click', close)
 
   const form = wrapper.appendChild(document.createElement('form'))
   if (options.title) form.appendChild(document.createElement('h5')).textContent = options.title
+
+  const formBody = form.appendChild(document.createElement('div'))
+  formBody.className = pc('__body')
+
   domFields.forEach(field => {
-    form.appendChild(document.createElement('div')).appendChild(field)
+    formBody.appendChild(document.createElement('div')).appendChild(field)
   })
   const buttons = form.appendChild(document.createElement('div'))
-  buttons.className = prefix + '-buttons'
+  buttons.className = pc('__buttons')
   buttons.appendChild(submitButton)
   buttons.appendChild(document.createTextNode(' '))
   buttons.appendChild(cancelButton)
@@ -91,77 +99,7 @@ function reportInvalid(dom, message) {
   const msg = parent.appendChild(document.createElement('div'))
   msg.style.left = (dom.offsetLeft + dom.offsetWidth + 2) + 'px'
   msg.style.top = (dom.offsetTop - 5) + 'px'
-  msg.className = 'ProseMirror-invalid'
+  msg.className = pc('__invalid')
   msg.textContent = message
   setTimeout(() => parent.removeChild(msg), 1500)
-}
-
-// ::- The type of field that `FieldPrompt` expects to be passed to it.
-export class Field {
-  // :: (Object)
-  // Create a field with the given options. Options support by all
-  // field types are:
-  //
-  // **`value`**`: ?any`
-  //   : The starting value for the field.
-  //
-  // **`label`**`: string`
-  //   : The label for the field.
-  //
-  // **`required`**`: ?bool`
-  //   : Whether the field is required.
-  //
-  // **`validate`**`: ?(any) → ?string`
-  //   : A function to validate the given value. Should return an
-  //     error message if it is not valid.
-  constructor(options) { this.options = options }
-
-  // render:: (state: EditorState, props: Object) → dom.Node
-  // Render the field to the DOM. Should be implemented by all subclasses.
-
-  // :: (dom.Node) → any
-  // Read the field's value from its DOM node.
-  read(dom) { return dom.value }
-
-  // :: (any) → ?string
-  // A field-type-specific validation function.
-  validateType(_value) {}
-
-  validate(value) {
-    if (!value && this.options.required) { return 'Required field' }
-    return this.validateType(value) || (this.options.validate && this.options.validate(value))
-  }
-
-  clean(value) {
-    return this.options.clean ? this.options.clean(value) : value
-  }
-}
-
-// ::- A field class for single-line text fields.
-export class TextField extends Field {
-  render() {
-    const input = document.createElement('input')
-    input.type = 'text'
-    input.placeholder = this.options.label
-    input.value = this.options.value || ''
-    input.autocomplete = 'off'
-    return input
-  }
-}
-
-// ::- A field class for dropdown fields based on a plain `<select>`
-// tag. Expects an option `options`, which should be an array of
-// `{value: string, label: string}` objects, or a function taking a
-// `ProseMirror` instance and returning such an array.
-export class SelectField extends Field {
-  render() {
-    const select = document.createElement('select')
-    this.options.options.forEach(o => {
-      const opt = select.appendChild(document.createElement('option'))
-      opt.value = o.value
-      opt.selected = o.value === this.options.value
-      opt.label = o.label
-    })
-    return select
-  }
 }

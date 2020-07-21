@@ -1,8 +1,12 @@
 import {
   Dropdown, joinUpItem, liftItem, undoItem, redoItem
 } from 'prosemirror-menu'
-
 import menus from './items'
+
+joinUpItem.spec.title = '向上合并'
+liftItem.spec.title = '减少层级'
+undoItem.spec.title = '撤销'
+redoItem.spec.title = '重做'
 
 const menuNames = menus.map(item => item.type)
 
@@ -19,19 +23,25 @@ export const buildMenuItems = (schema, supportMenus = menuNames) => {
 
   const makeItems = (list = []) => list.filter(item => supportsMap[item]).map(item => menuMap[item].create(schema))
 
-  const inlineMenus = makeItems(['strong', 'em', 'code', 'link'/* , 'code_block' */])
+  const inlineMenus = makeItems(['strong', 'em', 'link', 'code'/* , 'code_block' */])
 
-  const blockMenus = [
-    ...makeItems(['bullet_list', 'ordered_list', 'blockquote', 'image']),
-    joinUpItem, liftItem
-  ]
+  const blockMenus = makeItems(['bullet_list', 'ordered_list', 'image', 'blockquote'])
 
   const headingMenus = supportsMap.heading ? new Dropdown(
-    [...new Array(6)].map((_, index) => {
-      return menuMap.heading.create(schema, index)
-    }), { label: '标题' }) : []
+    [
+      ...makeItems(['paragraph']),
+      ...([...new Array(6)].map((_, index) => {
+        return menuMap.heading.create(schema, index)
+      }))
+    ], { label: '样式' }) : []
 
   return {
-    fullMenu: [inlineMenus, [headingMenus]].concat([[undoItem, redoItem]], [blockMenus])
+    fullMenu: [
+      [headingMenus],
+      inlineMenus,
+      blockMenus,
+      [joinUpItem, liftItem],
+      [undoItem, redoItem]
+    ]
   }
 }

@@ -2,7 +2,8 @@ import { MenuItem, wrapItem, blockTypeItem } from 'prosemirror-menu'
 import { NodeSelection } from 'prosemirror-state'
 import { toggleMark } from 'prosemirror-commands'
 import { wrapInList } from 'prosemirror-schema-list'
-import { TextField, openPrompt } from './prompt'
+import { TextField } from './fields'
+import { openPrompt } from './prompt'
 
 export function canInsert(state, nodeType) {
   const $from = state.selection.$from
@@ -13,21 +14,22 @@ export function canInsert(state, nodeType) {
   return false
 }
 
-export function insertImageItem(nodeType, title) {
+export function insertImageItem(nodeType, title, icon) {
   return new MenuItem({
     title,
-    label: 'Image',
+    label: title,
+    icon: icon,
     enable(state) { return canInsert(state, nodeType) },
     run(state, _, view) {
       const { from, to } = state.selection
       let attrs = null
       if (state.selection instanceof NodeSelection && state.selection.node.type === nodeType) { attrs = state.selection.node.attrs }
       openPrompt({
-        title: 'Insert image',
+        title: '插入图片',
         fields: {
-          src: new TextField({ label: 'Location', required: true, value: attrs && attrs.src }),
-          title: new TextField({ label: 'Title', value: attrs && attrs.title }),
-          alt: new TextField({ label: 'Description',
+          src: new TextField({ label: '图片地址', required: true, value: attrs && attrs.src }),
+          title: new TextField({ label: '图片标题', value: attrs && attrs.title }),
+          alt: new TextField({ label: '图片描述',
             value: attrs ? attrs.alt : state.doc.textBetween(from, to, ' ') })
         },
         callback(attrs) {
@@ -52,8 +54,11 @@ export function cmdItem(cmd, options) {
 
 export function markActive(state, type) {
   const { from, $from, to, empty } = state.selection
-  if (empty) return type.isInSet(state.storedMarks || $from.marks())
-  else return state.doc.rangeHasMark(from, to, type)
+  if (empty) {
+    return type.isInSet(state.storedMarks || $from.marks())
+  } else {
+    return state.doc.rangeHasMark(from, to, type)
+  }
 }
 
 export function markItem(markType, options) {
@@ -61,7 +66,10 @@ export function markItem(markType, options) {
     active(state) { return markActive(state, markType) },
     enable: true
   }
-  for (const prop in options) passedOptions[prop] = options[prop]
+
+  for (const prop in options) {
+    passedOptions[prop] = options[prop]
+  }
   return cmdItem(toggleMark(markType), passedOptions)
 }
 
