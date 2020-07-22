@@ -15,7 +15,7 @@ export default {
           return blockTypeItem(schema.nodes[this.type], {
             title: `${self.title} ${index}`,
             label: `${self.label} ${index + 1}`,
-            attrs: { index }
+            attrs: { level: index + 1 }
           })
         }))
       ], {
