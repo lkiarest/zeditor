@@ -44,7 +44,8 @@ export class Dropdown {
     )
     if (this.options.title) label.setAttribute('title', translate(view, this.options.title))
     const wrap = crel('div', { class: prefix + '-dropdown-wrap' }, label)
-    let open = null, listeningOnClose = null
+    let open = null
+    let listeningOnClose = null
     const close = () => {
       if (open && open.close()) {
         open = null
@@ -89,7 +90,8 @@ export class Dropdown {
 }
 
 function renderDropdownItems(items, view) {
-  const rendered = [], updates = []
+  const rendered = []
+  const updates = []
   for (let i = 0; i < items.length; i++) {
     const { dom, update } = items[i].render(view)
     rendered.push(crel('div', { class: prefix + '-dropdown-item' }, dom))

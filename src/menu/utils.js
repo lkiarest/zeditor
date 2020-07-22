@@ -35,8 +35,10 @@ export function insertImageItem(nodeType, title, icon) {
         fields: {
           src: new TextField({ label: '图片地址', required: true, value: attrs && attrs.src }),
           title: new TextField({ label: '图片标题', value: attrs && attrs.title }),
-          alt: new TextField({ label: '图片描述',
-            value: attrs ? attrs.alt : state.doc.textBetween(from, to, ' ') })
+          alt: new TextField({
+            label: '图片描述',
+            value: attrs ? attrs.alt : state.doc.textBetween(from, to, ' ')
+          })
         },
         callback(attrs) {
           view.dispatch(view.state.tr.replaceSelectionWith(nodeType.createAndFill(attrs)))

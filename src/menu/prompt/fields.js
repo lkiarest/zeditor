@@ -79,9 +79,22 @@ export class SelectField extends Field {
   }
 }
 
-// export class ImageUploadField extends Field {
-//   render () {
-//     const panel = document.createElement('div')
+export class UploadField extends Field {
+  render() {
+    const input = document.createElement(this.tagName)
+    input.type = 'file'
+    input.placeholder = this.options.label
+    input.value = this.options.value || ''
+    input.autocomplete = 'off'
+    return input
+  }
 
-//   }
-// }
+  read(dom) {
+    const control = dom.getElementsByTagName(this.tagName)
+    return control[0].files
+  }
+
+  get tagName() {
+    return 'input'
+  }
+}

@@ -6,6 +6,7 @@ import em from './em'
 import heading from './heading'
 import horizontalRule from './horizontalRule'
 import image from './image'
+import imageUpload from './imageUpload'
 import link from './link'
 import orderedList from './orderedList'
 import paragraph from './paragraph'
@@ -18,6 +19,6 @@ import fontFamily from './fontFamily'
 
 export default [
   blockquote, bulletList, code, codeBlock, em, heading, horizontalRule,
-  image, link, orderedList, table, paragraph, strong, underline, strikethrough,
+  image, imageUpload, link, orderedList, table, paragraph, strong, underline, strikethrough,
   fontSize, fontFamily
 ]

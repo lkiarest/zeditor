@@ -1,3 +1,5 @@
+export * from './fields'
+
 const prefix = 'zeditor-prompt'
 
 const pc = (className) => {
@@ -94,8 +96,10 @@ function getValues(fields, domFields) {
   const result = Object.create(null)
   let i = 0
   for (const name in fields) {
-    const field = fields[name], dom = domFields[i++]
-    const value = field.read(dom), bad = field.validate(value)
+    const field = fields[name]
+    const dom = domFields[i++]
+    const value = field.read(dom)
+    const bad = field.validate(value)
     if (bad) {
       reportInvalid(dom, bad)
       return null

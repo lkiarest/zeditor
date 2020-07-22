@@ -37,7 +37,8 @@ export default (markType, attrs) => function(state, dispatch) {
 
       dispatch(state.tr.addStoredMark(markType.create(attrs)))
     } else {
-      var has = false, tr = state.tr
+      let has = false
+      const tr = state.tr
       for (var i = 0; !has && i < ranges.length; i++) {
         var ref$1 = ranges[i]
         var $from = ref$1.$from

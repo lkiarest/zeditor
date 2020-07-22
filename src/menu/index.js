@@ -30,7 +30,7 @@ export const buildMenuItems = (schema, supportMenus = menuNames) => {
 
   const inlineMenus = makeItems(['strong', 'em', 'underline', 'strikethrough', 'link', 'code'/* , 'code_block' */])
 
-  const blockMenus = makeItems(['bullet_list', 'ordered_list', 'blockquote', 'table', 'image'])
+  const blockMenus = makeItems(['bullet_list', 'ordered_list', 'blockquote', 'table', 'image', 'image-upload'])
 
   return {
     fullMenu: cutList([
