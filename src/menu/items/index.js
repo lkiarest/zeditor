@@ -10,8 +10,14 @@ import link from './link'
 import orderedList from './orderedList'
 import paragraph from './paragraph'
 import strong from './strong'
+import table from './table'
+import underline from './underline'
+import strikethrough from './strikethrough'
+import fontSize from './fontSize'
+import fontFamily from './fontFamily'
 
 export default [
   blockquote, bulletList, code, codeBlock, em, heading, horizontalRule,
-  image, link, orderedList, paragraph, strong
+  image, link, orderedList, table, paragraph, strong, underline, strikethrough,
+  fontSize, fontFamily
 ]

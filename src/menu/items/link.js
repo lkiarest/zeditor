@@ -1,4 +1,4 @@
-import { icons } from 'prosemirror-menu'
+import icons from '../icons'
 import { linkItem } from '../utils'
 
 export default {

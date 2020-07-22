@@ -1,7 +1,8 @@
 import {
-  Dropdown, joinUpItem, liftItem, undoItem, redoItem
+  joinUpItem, liftItem, undoItem, redoItem
 } from 'prosemirror-menu'
 import menus from './items'
+import { cutList } from './utils'
 
 joinUpItem.spec.title = '向上合并'
 liftItem.spec.title = '减少层级'
@@ -23,25 +24,22 @@ export const buildMenuItems = (schema, supportMenus = menuNames) => {
 
   const makeItems = (list = []) => list.filter(item => supportsMap[item]).map(item => menuMap[item].create(schema))
 
-  const inlineMenus = makeItems(['strong', 'em', 'link', 'code'/* , 'code_block' */])
+  const heading = makeItems(['heading'])
 
-  const blockMenus = makeItems(['bullet_list', 'ordered_list', 'image', 'blockquote'])
+  const fontMenus = makeItems(['font-size', 'font-family'])
 
-  const headingMenus = supportsMap.heading ? new Dropdown(
-    [
-      ...makeItems(['paragraph']),
-      ...([...new Array(6)].map((_, index) => {
-        return menuMap.heading.create(schema, index)
-      }))
-    ], { label: '样式' }) : []
+  const inlineMenus = makeItems(['strong', 'em', 'underline', 'strikethrough', 'link', 'code'/* , 'code_block' */])
+
+  const blockMenus = makeItems(['bullet_list', 'ordered_list', 'blockquote', 'table', 'image'])
 
   return {
-    fullMenu: [
-      [headingMenus],
+    fullMenu: cutList([
+      heading,
+      fontMenus,
       inlineMenus,
       blockMenus,
       [joinUpItem, liftItem],
       [undoItem, redoItem]
-    ]
+    ])
   }
 }

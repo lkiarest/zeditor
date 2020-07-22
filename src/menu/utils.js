@@ -1,9 +1,15 @@
 import { MenuItem, wrapItem, blockTypeItem } from 'prosemirror-menu'
 import { NodeSelection } from 'prosemirror-state'
 import { toggleMark } from 'prosemirror-commands'
+import { Mark } from 'prosemirror-model'
 import { wrapInList } from 'prosemirror-schema-list'
-import { TextField } from './fields'
+import { TextField } from './prompt/fields'
 import { openPrompt } from './prompt'
+import { updateMark } from '../commands'
+
+const prefix = 'ProseMirror-menu'
+const SVG = 'http://www.w3.org/2000/svg'
+const XLINK = 'http://www.w3.org/1999/xlink'
 
 export function canInsert(state, nodeType) {
   const $from = state.selection.$from
@@ -70,7 +76,12 @@ export function markItem(markType, options) {
   for (const prop in options) {
     passedOptions[prop] = options[prop]
   }
-  return cmdItem(toggleMark(markType), passedOptions)
+
+  if (options.attrs) {
+    return cmdItem(updateMark(markType, options.attrs), passedOptions)
+  } else {
+    return cmdItem(toggleMark(markType), passedOptions)
+  }
 }
 
 export function linkItem(markType, title, icon) {
@@ -104,6 +115,94 @@ export function linkItem(markType, title, icon) {
 
 export function wrapListItem(nodeType, options) {
   return cmdItem(wrapInList(nodeType, options.attrs), options)
+}
+
+function hashPath(path) {
+  let hash = 0
+  for (let i = 0; i < path.length; i++) {
+    hash = (((hash << 5) - hash) + path.charCodeAt(i)) | 0
+  }
+  return hash
+}
+
+function buildSVG(name, data) {
+  let collection = document.getElementById(prefix + '-collection')
+  if (!collection) {
+    collection = document.createElementNS(SVG, 'svg')
+    collection.id = prefix + '-collection'
+    collection.style.display = 'none'
+    document.body.insertBefore(collection, document.body.firstChild)
+  }
+  const sym = document.createElementNS(SVG, 'symbol')
+  sym.id = name
+  sym.setAttribute('viewBox', '0 0 ' + data.width + ' ' + data.height)
+  const path = sym.appendChild(document.createElementNS(SVG, 'path'))
+  path.setAttribute('d', data.path)
+  collection.appendChild(sym)
+}
+
+export function getIcon(icon) {
+  const node = document.createElement('div')
+  node.className = prefix
+  if (icon.path) {
+    const name = 'pm-icon-' + hashPath(icon.path).toString(16)
+    if (!document.getElementById(name)) buildSVG(name, icon)
+    const svg = node.appendChild(document.createElementNS(SVG, 'svg'))
+    // svg.style.width = (icon.width / icon.height) + 'em'
+    const use = svg.appendChild(document.createElementNS(SVG, 'use'))
+    use.setAttributeNS(XLINK, 'href', /([^#]*)/.exec(document.location)[1] + '#' + name)
+  } else if (icon.dom) {
+    node.appendChild(icon.dom.cloneNode(true))
+  } else {
+    node.appendChild(document.createElement('span')).textContent = icon.text || ''
+    if (icon.css) node.firstChild.style.cssText = icon.css
+  }
+  return node.firstChild
+}
+
+export function cutList(arr = []) {
+  return arr.filter(item => {
+    if (Array.isArray(item)) {
+      return cutList(item)
+    }
+
+    return !!item
+  })
+}
+
+/**
+ * get given type marks from current cursor or selection
+ * @param {*} markType
+ * @param {*} state
+ * @returns found mark or null
+ */
+export function getCurrentMark(markType, state) {
+  const ref = state.selection
+  const cursor = ref.$cursor
+
+  if (cursor) {
+    const marks = cursor && cursor.marks()
+
+    if (!marks || marks.length === 0) {
+      return null
+    }
+
+    for (let i = 0, len = marks.length; i < len; i++) {
+      const mark = marks[i]
+      if (mark.type.name === markType && mark.attrs) {
+        return mark
+      }
+    }
+  } else {
+    if (ref.empty) {
+      return null
+    }
+
+    const fromMarks = ref.$from.marks().filter(mark => mark.type.name === markType)
+    const toMarks = ref.$to.marks().filter(mark => mark.type.name === markType)
+
+    return Mark.sameSet(fromMarks, toMarks) ? fromMarks[0] : null
+  }
 }
 
 export {
