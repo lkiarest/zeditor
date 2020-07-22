@@ -8,6 +8,8 @@ import {
 } from 'prosemirror-tables'
 import icons from '../icons'
 import { Dropdown } from '../dropdown'
+import { openPrompt } from '../prompt'
+import { TextField } from '../prompt/fields'
 
 function item(label, cmd) {
   return new MenuItem({
@@ -15,21 +17,16 @@ function item(label, cmd) {
   })
 }
 
-function createTable(schema) {
+function createTable(schema, { rowNum, colNum }) {
+  const content = [...new Array(+rowNum)].map((_, index) => {
+    return schema.nodes.table_row.create(undefined, Fragment.fromArray(
+      [...new Array(+colNum)].map(() => schema.nodes.table_cell.createAndFill({ colwidth: [100] }))
+    ))
+  })
+
   return schema.nodes.table.create(
     undefined,
-    Fragment.fromArray([
-      schema.nodes.table_row.create(undefined, Fragment.fromArray([
-        schema.nodes.table_header.createAndFill({ colwidth: [100] }),
-        schema.nodes.table_header.createAndFill({ colwidth: [100] }),
-        schema.nodes.table_header.createAndFill({ colwidth: [100] })
-      ])),
-      schema.nodes.table_row.create(undefined, Fragment.fromArray([
-        schema.nodes.table_cell.createAndFill(),
-        schema.nodes.table_cell.createAndFill(),
-        schema.nodes.table_cell.createAndFill()
-      ]))
-    ])
+    Fragment.fromArray(content)
   )
 }
 
@@ -37,11 +34,22 @@ const tableMenu = [
   new MenuItem({
     label: '插入表格',
     run(state, dispatch) {
-      if (dispatch) {
-        const tr = state.tr
-        dispatch(tr.replaceSelectionWith(createTable(state.schema)))
-      }
-      return true
+      openPrompt({
+        title: '插入表格',
+        fields: {
+          rowNum: new TextField({ label: '表格行数', required: true, value: 3 }),
+          colNum: new TextField({ label: '表格列数', required: true, value: 3 })
+        },
+        callback(attrs) {
+          if (dispatch) {
+            const tr = state.tr
+            dispatch(tr.replaceSelectionWith(createTable(state.schema, attrs)))
+          }
+          // view.dispatch(view.state.tr.replaceSelectionWith(nodeType.createAndFill(attrs)))
+          // view.focus()
+        }
+      })
+      // return true
     }
   }),
   item('删除表格', deleteTable),
@@ -62,9 +70,9 @@ const tableMenu = [
 
 export default {
   type: 'table',
-  title: '表格',
+  label: '表格',
   icon: icons.table,
   create (schema) {
-    return new Dropdown(tableMenu, { label: this.title, icon: this.icon })
+    return new Dropdown(tableMenu, { label: this.title, title: this.label, icon: this.icon })
   }
 }

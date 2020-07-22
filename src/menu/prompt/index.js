@@ -16,7 +16,17 @@ export function openPrompt(options) {
   }
 
   const domFields = []
-  for (const name in options.fields) domFields.push(options.fields[name].render())
+  for (const name in options.fields) {
+    const field = options.fields[name]
+    const control = document.createElement('div')
+    control.className = pc('__control')
+    const label = document.createElement('label')
+    label.textContent = field.options.label
+    label.className = pc('__control__label')
+    control.append(label)
+    control.append(field.render())
+    domFields.push(control)
+  }
 
   const submitButton = document.createElement('button')
   submitButton.type = 'submit'
@@ -35,7 +45,9 @@ export function openPrompt(options) {
   formBody.className = pc('__body')
 
   domFields.forEach(field => {
-    formBody.appendChild(document.createElement('div')).appendChild(field)
+    const control = document.createElement('div')
+    control.appendChild(field)
+    formBody.appendChild(control)
   })
   const buttons = form.appendChild(document.createElement('div'))
   buttons.className = pc('__buttons')
