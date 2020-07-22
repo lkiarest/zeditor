@@ -25,8 +25,8 @@ export function openPrompt(options) {
     const label = document.createElement('label')
     label.textContent = field.options.label
     label.className = pc('__control__label')
-    control.append(label)
-    control.append(field.render())
+    control.appendChild(label)
+    control.appendChild(field.render())
     domFields.push(control)
   }
 

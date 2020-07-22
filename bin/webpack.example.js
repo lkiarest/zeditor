@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  // mode: 'development',
+  mode: process.env.NODE_ENV,
   entry: './examples/index.js',
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -10,6 +10,12 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.js$/,
+      loader: 'babel-loader',
+      options: {
+        presets: ['@babel/env']
+      }
+    }, {
       test: /\.css$/,
       use: ['style-loader', 'css-loader']
     }, {

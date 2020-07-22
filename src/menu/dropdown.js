@@ -38,7 +38,7 @@ export class Dropdown {
 
     const label = crel('div', {
       class: prefix + '-dropdown ' + (this.options.class || ''),
-      style: this.options.css
+      style: this.options.css || ''
     },
     icon ? getIcon(icon) : translate(view, this.options.label)
     )

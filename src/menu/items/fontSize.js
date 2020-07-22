@@ -23,6 +23,7 @@ export default {
         return mark && mark.attrs[ATTR_NAME] === this.attrs[ATTR_NAME]
       }
     })), {
+      title: this.title,
       label: this.title,
       icon: this.icon
     })
