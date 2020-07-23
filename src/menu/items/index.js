@@ -16,9 +16,11 @@ import underline from './underline'
 import strikethrough from './strikethrough'
 import fontSize from './fontSize'
 import fontFamily from './fontFamily'
+import fontColor from './fontColor'
+import fontBgColor from './fontBgColor'
 
 export default [
   blockquote, bulletList, code, codeBlock, em, heading, horizontalRule,
   image, imageUpload, link, orderedList, table, paragraph, strong, underline, strikethrough,
-  fontSize, fontFamily
+  fontSize, fontFamily, fontColor, fontBgColor
 ]

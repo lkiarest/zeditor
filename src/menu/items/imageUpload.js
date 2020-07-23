@@ -1,7 +1,7 @@
 import { MenuItem } from 'prosemirror-menu'
 import { openPrompt, UploadField, TextField } from '../prompt'
 import { canInsert } from '../utils'
-
+import opts from '../../options'
 import icons from '../icons'
 // import { markItem } from '../utils'
 
@@ -15,6 +15,12 @@ export default {
       icon: this.icon,
       enable(state) { return canInsert(state, schema.nodes.image) },
       run(state, dispatch, view) {
+        const upload = opts.get('upload')
+        if (!upload || typeof upload !== 'function') {
+          console.warn('[image-upload] need to config upload function')
+          return
+        }
+
         openPrompt({
           title: '创建超链接',
           fields: {
@@ -25,16 +31,17 @@ export default {
             title: new TextField({ label: '标题' })
           },
           callback(attrs) {
-            // eslint-disable-next-line no-undef
-            const reader = new FileReader()
-            reader.readAsDataURL(attrs.files[0])
-            reader.onload = function(e) {
-              // debugger
+            const { files } = attrs
+            if (!files || files.length === 0) {
+              return
+            }
+
+            upload(attrs.files).then(result => {
               view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.image.createAndFill({
-                src: reader.result
+                src: result.url
               })))
               view.focus()
-            }
+            })
           }
         })
       }

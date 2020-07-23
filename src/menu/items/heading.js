@@ -15,7 +15,14 @@ export default {
           return blockTypeItem(schema.nodes[this.type], {
             title: `${self.title} ${index}`,
             label: `${self.label} ${index + 1}`,
-            attrs: { level: index + 1 }
+            attrs: { level: index + 1 },
+            render () {
+              const tag = `h${index + 1}`
+              const dom = document.createElement(tag)
+              dom.textContent = tag
+              dom.style.margin = 0
+              return dom
+            }
           })
         }))
       ], {

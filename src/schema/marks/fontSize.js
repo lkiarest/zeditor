@@ -6,5 +6,5 @@ export default {
       return value ? { fontSize: value } : ''
     }
   }],
-  toDOM: mark => ['span', { style: `font-size: ${mark.attrs.fontSize}px` }, 0]
+  toDOM: mark => ['span', { style: `font-size: ${mark.attrs.fontSize}` }, 0]
 }

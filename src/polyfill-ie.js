@@ -1,0 +1,5 @@
+require('es6-map/implement')
+require('es6-set/implement')
+require('promise-polyfill/src/polyfill')
+require('../vendor/assign')
+require('../vendor/classList')

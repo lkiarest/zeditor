@@ -143,9 +143,9 @@ function buildSVG(name, data) {
   collection.appendChild(sym)
 }
 
-export function getIcon(icon) {
+export function getIcon(icon, withWrapper) {
   const node = document.createElement('div')
-  node.className = prefix
+  node.className = 'ProseMirror-icon'
   if (icon.path) {
     const name = 'pm-icon-' + hashPath(icon.path).toString(16)
     if (!document.getElementById(name)) buildSVG(name, icon)
@@ -159,7 +159,7 @@ export function getIcon(icon) {
     node.appendChild(document.createElement('span')).textContent = icon.text || ''
     if (icon.css) node.firstChild.style.cssText = icon.css
   }
-  return node.firstChild
+  return withWrapper ? node : node.firstChild
 }
 
 export function cutList(arr = []) {
