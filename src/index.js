@@ -1,4 +1,4 @@
-import { Schema } from 'prosemirror-model'
+import { Schema, DOMSerializer, DOMParser } from 'prosemirror-model'
 import { schema } from 'prosemirror-schema-basic'
 import { addListNodes } from 'prosemirror-schema-list'
 import { EditorState } from 'prosemirror-state'
@@ -26,7 +26,7 @@ const create = ({ container = document.body } = {}, options = {}) => {
 
   if (!configs.menubar || configs.menubar.length === 0) {
     console.error('invalid config [menubar]')
-    return
+    return null
   }
 
   const editorSchema = new Schema({
@@ -44,26 +44,28 @@ const create = ({ container = document.body } = {}, options = {}) => {
     marks: schema.spec.marks.append(extendSchema.marks)
   })
 
+  const plugins = [
+    history(),
+    columnResizing(),
+    tableEditing(),
+    keymap(baseKeymap),
+    keymap({ 'Mod-z': undo, 'Mod-y': redo }),
+    keymap({
+      Tab: goToNextCell(1),
+      'Shift-Tab': goToNextCell(-1)
+    }),
+    menuBar({
+      floating: true,
+      content: buildMenuBar(editorSchema, configs.menubar)
+    }),
+    // buildInputRules(editorSchema),
+    prosemirrorDropcursor.dropCursor(),
+    prosemirrorGapcursor.gapCursor()
+  ]
+
   let state = EditorState.create({
     schema: editorSchema,
-    plugins: [
-      history(),
-      columnResizing(),
-      tableEditing(),
-      keymap(baseKeymap),
-      keymap({ 'Mod-z': undo, 'Mod-y': redo }),
-      keymap({
-        Tab: goToNextCell(1),
-        'Shift-Tab': goToNextCell(-1)
-      }),
-      menuBar({
-        floating: true,
-        content: buildMenuBar(editorSchema, configs.menubar)
-      }),
-      // buildInputRules(editorSchema),
-      prosemirrorDropcursor.dropCursor(),
-      prosemirrorGapcursor.gapCursor()
-    ]
+    plugins
   })
 
   const fix = fixTables(state)
@@ -76,11 +78,42 @@ const create = ({ container = document.body } = {}, options = {}) => {
     dispatchTransaction(transaction) {
       const newState = view.state.apply(transaction)
       view.updateState(newState)
+
+      // emit document change event
+      const onChange = configs.events && configs.events.change
+      if (transaction.docChanged && onChange && typeof onChange === 'function') {
+        const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(transaction.doc)
+        const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
+        onChange.call(view, htmlStr)
+      }
     }
   })
 
-  document.execCommand('enableObjectResizing', false, false)
-  document.execCommand('enableInlineTableEditing', false, false)
+  try {
+    document.execCommand('enableObjectResizing', false, false)
+    document.execCommand('enableInlineTableEditing', false, false)
+  } catch (e) {
+    // do nothing
+  }
+
+  return {
+    getValue () {
+      const doc = view.state.tr.doc
+      const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(doc)
+      const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
+      return htmlStr
+    },
+    setValue (val) {
+      // can't directly change innerHTML as below:
+      // view.dom.innerHTML = val
+      // view.domObserver.flush()
+      const container = document.createElement('div')
+      container.innerHTML = val
+      const doc = DOMParser.fromSchema(view.state.schema).parse(container.firstChild)
+      const newState = EditorState.create({ schema: view.state.schema, doc, plugins: view.state.plugins })
+      view.updateState(newState)
+    }
+  }
 }
 
 export default {

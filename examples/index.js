@@ -6,7 +6,21 @@ const container = document.createElement('div')
 container.className = 'container'
 document.body.appendChild(container)
 
-Editor.create(container, {
+const btnGet = document.createElement('button')
+btnGet.textContent = 'Get Value'
+btnGet.addEventListener('click', () => {
+  console.log(editor.getValue())
+})
+document.body.appendChild(btnGet)
+
+const btnSet = document.createElement('button')
+btnSet.textContent = 'SetValue'
+btnSet.addEventListener('click', () => {
+  editor.setValue('<p>Hello World</>')
+})
+document.body.appendChild(btnSet)
+
+const editor = Editor.create(container, {
   // menubar: [
   //   ['heading'],
   //   ['font-size', 'font-family', 'font-color', 'bg-color'],
@@ -32,5 +46,10 @@ Editor.create(container, {
         })
       }
     })
+  },
+  events: {
+    change (content) {
+      console.log('content is ', content)
+    }
   }
 })
