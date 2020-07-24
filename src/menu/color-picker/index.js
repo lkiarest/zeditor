@@ -36,7 +36,7 @@ function create(title = '') {
 
 export function pickColor(menu, callback, { title = '选择文字颜色' } = {}) {
   if (hasPicker) {
-    return
+    return null
   }
 
   const content = create(title)

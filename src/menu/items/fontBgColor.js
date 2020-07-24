@@ -24,15 +24,13 @@ export default {
           src = src.parentElement || src.parentNode
         }
 
-        pickColor(src, color => {
-          updateMark(schema.marks[TYPE], { bgColor: color })(state, dispatch)
-        }, {
-          title: '选择背景颜色'
-        })
-
-        e.stopPropagation() // prevent outer click
-
-        return false
+        setTimeout(() => {
+          pickColor(src, color => {
+            updateMark(schema.marks[TYPE], { bgColor: color })(state, dispatch)
+          }, {
+            title: '选择背景颜色'
+          })
+        }, 0)
       }
     })
   }

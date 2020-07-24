@@ -22,12 +22,16 @@ export default {
           src = src.parentElement || src.parentNode
         }
 
-        pickColor(src, color => {
-          updateMark(schema.marks[TYPE], { fontColor: color })(state, dispatch)
-        })
+        setTimeout(() => {
+          pickColor(src, color => {
+            updateMark(schema.marks[TYPE], { fontColor: color })(state, dispatch)
+          })
+        }, 0)
 
-        e.stopPropagation() // prevent outer click
-        return false
+        // if (destroy) {
+        //   e.stopPropagation() // prevent outer click
+        //   return false
+        // }
       }
     })
   }
