@@ -30,6 +30,6 @@ module.exports = merge(baseConfig, {
     'prosemirror-menu/style/menu.css': 'prosemirror-menu/style/menu.css'
   },
   plugins: [
-    new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)()
+    // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)()
   ]
 })

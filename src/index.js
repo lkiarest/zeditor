@@ -20,6 +20,8 @@ import './styles/index.less'
 const prosemirrorDropcursor = require('prosemirror-dropcursor')
 const prosemirrorGapcursor = require('prosemirror-gapcursor')
 
+const noop = () => {}
+
 const create = ({ container = document.body } = {}, options = {}) => {
   const configs = opts.merge(options).get()
 
@@ -30,6 +32,7 @@ const create = ({ container = document.body } = {}, options = {}) => {
 
   const sourceNodes = cloneDeep(schema.spec.nodes)
   const sourceMarks = cloneDeep(schema.spec.marks)
+  const onChange = (configs.events && configs.events.change) || noop
 
   let editorSchema = new Schema({
     nodes: addListNodes(sourceNodes, 'paragraph block*', 'block').append(tableNodes({
@@ -75,6 +78,10 @@ const create = ({ container = document.body } = {}, options = {}) => {
     state = state.apply(fix.setMeta('addToHistory', false))
   }
 
+  function notifyChange(value) {
+    onChange.call(view, value)
+  }
+
   const view = new EditorView(container, {
     state,
     dispatchTransaction(transaction) {
@@ -82,11 +89,10 @@ const create = ({ container = document.body } = {}, options = {}) => {
       view.updateState(newState)
 
       // emit document change event
-      const onChange = configs.events && configs.events.change
       if (transaction.docChanged && onChange && typeof onChange === 'function') {
         const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(transaction.doc)
         const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
-        onChange.call(view, htmlStr)
+        notifyChange(htmlStr)
       }
     }
   })
@@ -129,6 +135,9 @@ const create = ({ container = document.body } = {}, options = {}) => {
       const doc = DOMParser.fromSchema(view.state.schema).parse(container.firstChild)
       const newState = EditorState.create({ schema: view.state.schema, doc, plugins: view.state.plugins })
       view.updateState(newState)
+
+      // emit change event
+      notifyChange(val)
     }
   }
 }

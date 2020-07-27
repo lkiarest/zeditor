@@ -1,7 +1,7 @@
 {
-  "name": "zeditor",
-  "version": "0.0.1",
-  "description": "A editor based on prosemirror",
+  "name": "@qintx/zeditor",
+  "version": "0.9.1",
+  "description": "Rich text editor based on prosemirror",
   "main": "lib/index.min.js",
   "author": "qintianxiang",
   "license": "MIT",
@@ -70,5 +70,17 @@
     "prosemirror-state": "^1.3.3",
     "prosemirror-tables": "^1.1.0",
     "prosemirror-view": "^1.15.2"
+  },
+  "keywords": [
+    "wysiwyg",
+    "rich text editor",
+    "rtc",
+    "prosemirror",
+    "html",
+    "contentEditable",
+    "editor"
+  ],
+  "repository": {
+    "github": "https://github.com/lkiarest/zeditor"
   }
 }
