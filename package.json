@@ -2,7 +2,7 @@
   "name": "@qintx/zeditor",
   "version": "0.9.1",
   "description": "Rich text editor based on prosemirror",
-  "main": "lib/index.min.js",
+  "main": "lib/index.js",
   "author": "qintianxiang",
   "license": "MIT",
   "private": false,
