@@ -6,7 +6,7 @@ const baseConfig = require('./webpack.base')
 module.exports = merge(baseConfig, {
   entry: './examples/index.js',
   output: {
-    path: path.resolve(__dirname, '../demo'),
+    path: path.resolve(__dirname, '../docs'),
     filename: 'index.min.js'
   },
   plugins: [
