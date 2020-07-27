@@ -2,6 +2,8 @@
 
 ProseMirro based rich text editor。
 
+[Live Demo](https://lkiarest.github.io/zeditor/)
+
 ### Install
 
 ```shell
