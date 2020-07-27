@@ -80,6 +80,7 @@
     "contentEditable",
     "editor"
   ],
+  "files": ["/lib"],
   "repository": {
     "github": "https://github.com/lkiarest/zeditor"
   }
