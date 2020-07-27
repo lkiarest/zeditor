@@ -22,7 +22,7 @@ const prosemirrorGapcursor = require('prosemirror-gapcursor')
 
 const noop = () => {}
 
-const create = ({ container = document.body } = {}, options = {}) => {
+const create = (container = document.body, options = {}) => {
   const configs = opts.merge(options).get()
 
   if (!configs.menubar || configs.menubar.length === 0) {
