@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep'
 import { Schema, DOMSerializer, DOMParser } from 'prosemirror-model'
 import { schema } from 'prosemirror-schema-basic'
 import { addListNodes } from 'prosemirror-schema-list'
@@ -13,8 +14,6 @@ import { buildMenuBar } from './menu'
 import extendSchema from './schema'
 import opts from './options'
 
-import '../vendor/assign'
-
 import 'prosemirror-menu/style/menu.css'
 import './styles/index.less'
 
@@ -29,8 +28,11 @@ const create = ({ container = document.body } = {}, options = {}) => {
     return null
   }
 
-  const editorSchema = new Schema({
-    nodes: addListNodes(schema.spec.nodes, 'paragraph block*', 'block').append(tableNodes({
+  const sourceNodes = cloneDeep(schema.spec.nodes)
+  const sourceMarks = cloneDeep(schema.spec.marks)
+
+  let editorSchema = new Schema({
+    nodes: addListNodes(sourceNodes, 'paragraph block*', 'block').append(tableNodes({
       tableGroup: 'block',
       cellContent: 'block+',
       cellAttributes: {
@@ -41,7 +43,7 @@ const create = ({ container = document.body } = {}, options = {}) => {
         }
       }
     })), // .append(extendSchema.nodes),
-    marks: schema.spec.marks.append(extendSchema.marks)
+    marks: sourceMarks.append(extendSchema.marks)
   })
 
   const plugins = [
@@ -55,7 +57,7 @@ const create = ({ container = document.body } = {}, options = {}) => {
       'Shift-Tab': goToNextCell(-1)
     }),
     menuBar({
-      floating: true,
+      floating: false,
       content: buildMenuBar(editorSchema, configs.menubar)
     }),
     // buildInputRules(editorSchema),
@@ -97,12 +99,27 @@ const create = ({ container = document.body } = {}, options = {}) => {
   }
 
   return {
+    /**
+     * do release work
+     */
+    destroy () {
+      view.destroy()
+      state = null
+      editorSchema = null
+    },
+    /**
+     * get input value as html string
+     */
     getValue () {
       const doc = view.state.tr.doc
       const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(doc)
       const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
       return htmlStr
     },
+    /**
+     * set html string as new value
+     * @param {String} val html string
+     */
     setValue (val) {
       // can't directly change innerHTML as below:
       // view.dom.innerHTML = val
