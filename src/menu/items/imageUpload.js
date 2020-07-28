@@ -37,7 +37,7 @@ export default {
             }
 
             upload(attrs.files).then(result => {
-              view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.image.createAndFill({
+              view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.resizableImage.createAndFill({
                 src: result.url
               })))
               view.focus()

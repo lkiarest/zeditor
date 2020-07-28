@@ -13,6 +13,7 @@ import { tableEditing, columnResizing, tableNodes, fixTables, goToNextCell } fro
 import { buildMenuBar } from './menu'
 import extendSchema from './schema'
 import opts from './options'
+import { imagePlugin } from './plugins'
 
 import 'prosemirror-menu/style/menu.css'
 import './styles/index.less'
@@ -45,7 +46,7 @@ const create = (container = document.body, options = {}) => {
           setDOMAttr(value, attrs) { if (value) attrs.style = (attrs.style || '') + `background-color: ${value};` }
         }
       }
-    })), // .append(extendSchema.nodes),
+    })).append(extendSchema.nodes),
     marks: sourceMarks.append(extendSchema.marks)
   })
 
@@ -63,6 +64,7 @@ const create = (container = document.body, options = {}) => {
       floating: false,
       content: buildMenuBar(editorSchema, configs.menubar)
     }),
+    imagePlugin,
     // buildInputRules(editorSchema),
     prosemirrorDropcursor.dropCursor(),
     prosemirrorGapcursor.gapCursor()
@@ -94,7 +96,8 @@ const create = (container = document.body, options = {}) => {
         const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
         notifyChange(htmlStr)
       }
-    }
+    },
+    nodeViews: extendSchema.nodeViews
   })
 
   try {

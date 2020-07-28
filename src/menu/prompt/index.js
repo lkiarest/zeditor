@@ -14,6 +14,9 @@ export function openPrompt(options) {
   setTimeout(() => window.addEventListener('mousedown', mouseOutside), 50)
   const close = () => {
     window.removeEventListener('mousedown', mouseOutside)
+    form.removeEventListener('submit', onSubmit)
+    form.removeEventListener('keydown', onKeyDown)
+    cancelButton.removeEventListener('click', close)
     if (wrapper.parentNode) wrapper.parentNode.removeChild(wrapper)
   }
 
@@ -69,12 +72,12 @@ export function openPrompt(options) {
     }
   }
 
-  form.addEventListener('submit', e => {
+  const onSubmit = (e) => {
     e.preventDefault()
     submit()
-  })
+  }
 
-  form.addEventListener('keydown', e => {
+  const onKeyDown = (e) => {
     if (e.keyCode === 27) {
       e.preventDefault()
       close()
@@ -86,7 +89,11 @@ export function openPrompt(options) {
         if (!wrapper.contains(document.activeElement)) close()
       }, 500)
     }
-  })
+  }
+
+  form.addEventListener('submit', onSubmit)
+
+  form.addEventListener('keydown', onKeyDown)
 
   const input = form.elements[0]
   if (input) input.focus()
