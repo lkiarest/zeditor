@@ -6,11 +6,12 @@ import { EditorView } from 'prosemirror-view'
 import { undo, redo, history } from 'prosemirror-history'
 import { keymap } from 'prosemirror-keymap'
 import { baseKeymap } from 'prosemirror-commands'
-// import { buildInputRules } from 'prosemirror-example-setup'
+import { buildInputRules } from './inputrules'
 import { menuBar } from 'prosemirror-menu'
 import { tableEditing, columnResizing, tableNodes, fixTables, goToNextCell } from 'prosemirror-tables'
 import { schema } from './schema/basicSchema'
 import { buildMenuBar } from './menu'
+import { buildKeymap } from './keymap'
 import extendSchema from './schema'
 import opts from './options'
 import { imagePlugin } from './plugins'
@@ -56,7 +57,6 @@ const create = (container = document.body, options = {}) => {
     history(),
     columnResizing(),
     tableEditing(),
-    keymap(baseKeymap),
     keymap({ 'Mod-z': undo, 'Mod-y': redo }),
     keymap({
       Tab: goToNextCell(1),
@@ -67,7 +67,9 @@ const create = (container = document.body, options = {}) => {
       content: menus
     }),
     imagePlugin,
-    // buildInputRules(editorSchema),
+    buildInputRules(editorSchema),
+    keymap(buildKeymap(editorSchema)),
+    keymap(baseKeymap),
     prosemirrorDropcursor.dropCursor(),
     prosemirrorGapcursor.gapCursor()
   ]
