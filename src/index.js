@@ -51,7 +51,6 @@ const create = (container = document.body, options = {}) => {
   })
 
   const menus = buildMenuBar(editorSchema, configs.menubar)
-  console.log(menus)
 
   const plugins = [
     history(),
