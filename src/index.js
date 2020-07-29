@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash.clonedeep'
 import { Schema, DOMSerializer, DOMParser } from 'prosemirror-model'
-import { schema } from 'prosemirror-schema-basic'
 import { addListNodes } from 'prosemirror-schema-list'
 import { EditorState } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
@@ -10,6 +9,7 @@ import { baseKeymap } from 'prosemirror-commands'
 // import { buildInputRules } from 'prosemirror-example-setup'
 import { menuBar } from 'prosemirror-menu'
 import { tableEditing, columnResizing, tableNodes, fixTables, goToNextCell } from 'prosemirror-tables'
+import { schema } from './schema/basicSchema'
 import { buildMenuBar } from './menu'
 import extendSchema from './schema'
 import opts from './options'
@@ -46,9 +46,12 @@ const create = (container = document.body, options = {}) => {
           setDOMAttr(value, attrs) { if (value) attrs.style = (attrs.style || '') + `background-color: ${value};` }
         }
       }
-    })).append(extendSchema.nodes),
-    marks: sourceMarks.append(extendSchema.marks)
+    })), // .append(extendSchema.nodes),
+    marks: sourceMarks // .append(extendSchema.marks)
   })
+
+  const menus = buildMenuBar(editorSchema, configs.menubar)
+  console.log(menus)
 
   const plugins = [
     history(),
@@ -62,7 +65,7 @@ const create = (container = document.body, options = {}) => {
     }),
     menuBar({
       floating: false,
-      content: buildMenuBar(editorSchema, configs.menubar)
+      content: menus
     }),
     imagePlugin,
     // buildInputRules(editorSchema),

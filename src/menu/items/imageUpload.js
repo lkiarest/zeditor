@@ -6,7 +6,7 @@ import icons from '../icons'
 // import { markItem } from '../utils'
 
 export default {
-  type: 'image-upload',
+  type: 'image_upload',
   title: '图片上传',
   icon: icons.imageUpload,
   create (schema) {
@@ -37,7 +37,7 @@ export default {
             }
 
             upload(attrs.files).then(result => {
-              view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.resizableImage.createAndFill({
+              view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.image.createAndFill({
                 src: result.url
               })))
               view.focus()

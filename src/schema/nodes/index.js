@@ -1,9 +1,5 @@
-import resizableImage, { nodeView } from './resizableImage'
+import { nodeView } from './resizableImage'
 
 export const nodeViews = {
-  resizableImage: nodeView
-}
-
-export default {
-  resizableImage
+  image: nodeView
 }

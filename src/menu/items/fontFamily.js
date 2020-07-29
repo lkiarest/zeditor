@@ -3,7 +3,7 @@ import { Dropdown } from '../dropdown'
 import icons from '../icons'
 import opts from '../../options'
 
-const TYPE = 'font-family'
+const TYPE = 'font_family'
 const ATTR_NAME = 'fontFamily'
 
 export default {

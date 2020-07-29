@@ -29,10 +29,11 @@ editor.destroy()
 {
   menubar: [
     ['heading'],
-    ['font-size', 'font-family', 'font-color', 'bg-color'],
-    ['strong', 'em', 'underline', 'strikethrough', 'link', 'code'],
+    ['font_size', 'font_family', 'font_color', 'bg_color'],
+    ['strong', 'em', 'underline', 'strikethrough', 'link'],
     ['bullet_list', 'ordered_list', 'blockquote', 'lift', 'join'],
-    ['table', 'image', 'image-upload'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+    ['table', 'image', 'image_upload'],
     ['undo', 'redo']
   ],
   // font/background colors

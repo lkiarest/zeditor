@@ -18,9 +18,14 @@ import fontSize from './fontSize'
 import fontFamily from './fontFamily'
 import fontColor from './fontColor'
 import fontBgColor from './fontBgColor'
+import alignLeft from './alignLeft'
+import alignCenter from './alignCenter'
+import alignRight from './alignRight'
+import alignJustify from './alignJustify'
 
 export default [
   blockquote, bulletList, code, codeBlock, em, heading, horizontalRule,
   image, imageUpload, link, orderedList, table, paragraph, strong, underline, strikethrough,
-  fontSize, fontFamily, fontColor, fontBgColor
+  fontSize, fontFamily, fontColor, fontBgColor,
+  alignLeft, alignCenter, alignRight, alignJustify
 ]

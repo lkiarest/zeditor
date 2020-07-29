@@ -6,7 +6,7 @@ import { pickColor } from '../color-picker'
 import { updateMark } from '../../commands'
 import icons from '../icons'
 
-const TYPE = 'bg-color'
+const TYPE = 'bg_color'
 
 export default {
   type: TYPE,

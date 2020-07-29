@@ -1,8 +1,7 @@
 import marks from './marks'
-import nodes, { nodeViews } from './nodes'
+import { nodeViews } from './nodes'
 
 export default {
   marks,
-  nodes,
   nodeViews
 }

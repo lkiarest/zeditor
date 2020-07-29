@@ -3,7 +3,7 @@ import { Dropdown } from '../dropdown'
 import icons from '../icons'
 import opts from '../../options'
 
-const TYPE = 'font-size'
+const TYPE = 'font_size'
 const ATTR_NAME = 'fontSize'
 
 export default {
