@@ -8,8 +8,8 @@ import bgColor from './bgColor'
 export default {
   underline,
   strikethrough,
-  'font-size': fontSize,
-  'font-family': fontFamily,
-  'font-color': fontColor,
-  'bg-color': bgColor
+  font_size: fontSize,
+  font_family: fontFamily,
+  font_color: fontColor,
+  bg_color: bgColor
 }
