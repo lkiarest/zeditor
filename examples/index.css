@@ -12,3 +12,23 @@ button {
 button:hover {
   background-color: #eee;
 }
+
+.git-link {
+  height: 50px;
+  display: block;
+  background-image: url('https://github.githubassets.com/images/modules/octocats/supportcat.jpg');
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all linear 100ms;
+  font-size: 30px;
+  line-height: 50px;
+  color: rgb(144, 177, 240, 0);
+  text-decoration: none;
+  text-align: center;
+}
+
+.git-link:hover {
+  color: rgb(144, 177, 240, 1);
+  background-position: calc(50% - 140px);
+}

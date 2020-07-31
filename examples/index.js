@@ -5,6 +5,13 @@ import './index.css'
 
 let editor = null
 
+const linkGithub = document.createElement('a')
+linkGithub.className = 'git-link'
+linkGithub.href = 'https://github.com/lkiarest/zeditor'
+linkGithub.textContent = 'Source Code'
+
+document.body.appendChild(linkGithub)
+
 const container = document.createElement('div')
 container.className = 'container'
 document.body.appendChild(container)

@@ -83,6 +83,14 @@ editor.destroy()
 }
 ```
 
+### IE10
+
+Need to add polyfill for IE10:
+
+```
+import '@qintx/zeditor/lib/polyfill'
+```
+
 ### Repo
 
 [Github](https://github.com/lkiarest/zeditor)
