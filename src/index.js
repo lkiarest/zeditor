@@ -16,7 +16,7 @@ import extendSchema from './schema'
 import opts from './options'
 import { imagePlugin } from './plugins'
 
-import 'prosemirror-menu/style/menu.css'
+// import 'prosemirror-menu/style/menu.css'
 import './styles/index.less'
 
 const prosemirrorDropcursor = require('prosemirror-dropcursor')
