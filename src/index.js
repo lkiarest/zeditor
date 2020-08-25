@@ -139,7 +139,7 @@ const create = (container = document.body, options = {}) => {
       // view.domObserver.flush()
       const container = document.createElement('div')
       container.innerHTML = val
-      const doc = DOMParser.fromSchema(view.state.schema).parse(container.firstChild)
+      const doc = DOMParser.fromSchema(view.state.schema).parse(container)
       const newState = EditorState.create({ schema: view.state.schema, doc, plugins: view.state.plugins })
       view.updateState(newState)
 

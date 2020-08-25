@@ -14,7 +14,7 @@ export default {
     priority: 51, // must be higher than the default paragraph spec
     getAttrs(dom) {
       return {
-        alignment: dom.styles['text-align'] || ''
+        alignment: dom.style.textAlign || ''
       }
     }
   }],
