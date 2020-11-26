@@ -85,6 +85,7 @@ export class UploadField extends Field {
     input.type = 'file'
     input.placeholder = this.options.label
     input.value = this.options.value || ''
+    input.accept = this.options.accept || ''
     input.autocomplete = 'off'
     return input
   }

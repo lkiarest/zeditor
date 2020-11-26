@@ -26,6 +26,7 @@ export default {
           fields: {
             files: new UploadField({
               label: '上传',
+              accept: 'image/*',
               required: true
             }),
             title: new TextField({ label: '标题' })
