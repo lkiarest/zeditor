@@ -22,7 +22,7 @@ export default {
         }
 
         openPrompt({
-          title: '创建超链接',
+          title: '上传图片',
           fields: {
             files: new UploadField({
               label: '上传',
@@ -31,14 +31,15 @@ export default {
             title: new TextField({ label: '标题' })
           },
           callback(attrs) {
-            const { files } = attrs
+            const { files, title } = attrs
             if (!files || files.length === 0) {
               return
             }
 
             upload(attrs.files).then(result => {
               view.dispatch(view.state.tr.replaceSelectionWith(schema.nodes.image.createAndFill({
-                src: result.url
+                src: result.url,
+                title: title || ''
               })))
               view.focus()
             })

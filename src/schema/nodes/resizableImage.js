@@ -12,6 +12,8 @@ class FootnoteView {
     const img = document.createElement('img')
     img.setAttribute('src', node.attrs.src)
     img.style.width = '100%'
+    img.title = node.attrs.title || ''
+    img.alt = node.attrs.alt || ''
 
     // img.style.border = "1px solid red"
 
