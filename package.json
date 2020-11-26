@@ -1,6 +1,6 @@
 {
   "name": "@qintx/zeditor",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Rich text editor based on prosemirror",
   "main": "lib/index.js",
   "author": "qintianxiang",
