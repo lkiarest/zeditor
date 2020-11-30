@@ -5,6 +5,8 @@ import opts from '../../options'
 import icons from '../icons'
 // import { markItem } from '../utils'
 
+const REG_FILE_TYPE = /^image\//
+
 export default {
   type: 'image_upload',
   title: '图片上传',
@@ -32,8 +34,15 @@ export default {
             title: new TextField({ label: '标题' })
           },
           callback(attrs) {
-            const { files, title } = attrs
+            const { files = [], title } = attrs
             if (!files || files.length === 0) {
+              return
+            }
+
+            const fileTypeCheck = [...files].every(file => file.type.match(REG_FILE_TYPE))
+
+            if (!fileTypeCheck) {
+              console.warn('invalid file type !')
               return
             }
 
