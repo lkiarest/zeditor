@@ -9,6 +9,7 @@ import { baseKeymap } from 'prosemirror-commands'
 import { buildInputRules } from './inputrules'
 import { menuBar } from 'prosemirror-menu'
 import { tableEditing, columnResizing, tableNodes, fixTables, goToNextCell } from 'prosemirror-tables'
+import { sourcePlugin, sourcePluginKey } from './plugins/prosemirror-source'
 import { schema } from './schema/basicSchema'
 import { buildMenuBar } from './menu'
 import { buildKeymap } from './keymap'
@@ -51,7 +52,11 @@ const create = (container = document.body, options = {}) => {
     marks: sourceMarks // .append(extendSchema.marks)
   })
 
-  const menus = buildMenuBar(editorSchema, configs.menubar)
+  const menus = buildMenuBar(editorSchema, configs.menubar, {
+    disable (state) {
+      return sourcePluginKey.getState(state).mode === 'source'
+    }
+  })
 
   const plugins = [
     history(),
@@ -71,7 +76,13 @@ const create = (container = document.body, options = {}) => {
     keymap(buildKeymap(editorSchema)),
     keymap(baseKeymap),
     prosemirrorDropcursor.dropCursor(),
-    prosemirrorGapcursor.gapCursor()
+    prosemirrorGapcursor.gapCursor(),
+    sourcePlugin({
+      text: {
+        design: '设计',
+        source: '源码'
+      }
+    })
   ]
 
   let state = EditorState.create({
@@ -101,7 +112,8 @@ const create = (container = document.body, options = {}) => {
         notifyChange(htmlStr)
       }
     },
-    nodeViews: extendSchema.nodeViews
+    nodeViews: extendSchema.nodeViews,
+    class: options.className
   })
 
   try {
@@ -125,9 +137,8 @@ const create = (container = document.body, options = {}) => {
      */
     getValue () {
       const doc = view.state.tr.doc
-      const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(doc)
-      const htmlStr = [].map.call(fragment.childNodes, x => x.outerHTML).join('')
-      return htmlStr
+      const fragment = DOMSerializer.fromSchema(editorSchema).serializeFragment(doc, {}, document.createElement('div'))
+      return fragment.innerHTML
     },
     /**
      * set html string as new value

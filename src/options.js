@@ -2,6 +2,7 @@
  * default options
  */
 const DEFAULT_OPTS = {
+  editorClass: '', // class name to style the editor area
   menubar: [
     ['heading'],
     ['font_size', 'font_family', 'font_color', 'bg_color'],

@@ -20,9 +20,9 @@ const internalMap = {
   redo: redoItem
 }
 
-const createMenu = (schema, menuName) => {
+const createMenu = (schema, menuName, options) => {
   if (menuMap[menuName]) {
-    return menuMap[menuName].create(schema)
+    return menuMap[menuName].create(schema, options)
   }
 
   if (internalMap[menuName]) {
@@ -33,14 +33,14 @@ const createMenu = (schema, menuName) => {
   return null
 }
 
-function buildMenuItems(schema, menuItem) {
+function buildMenuItems(schema, menuItem, options) {
   if (Array.isArray(menuItem)) {
-    return menuItem.map(item => buildMenuItems(schema, item)).filter(item => !!item)
+    return menuItem.map(item => buildMenuItems(schema, item, options)).filter(item => !!item)
   }
 
-  return createMenu(schema, menuItem)
+  return createMenu(schema, menuItem, options)
 }
 
-export const buildMenuBar = (schema, menubar = []) => {
-  return buildMenuItems(schema, menubar)
+export const buildMenuBar = (schema, menubar = [], options) => {
+  return buildMenuItems(schema, menubar, options)
 }

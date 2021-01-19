@@ -66,6 +66,9 @@ function create() {
     * @param file file object from input control
     * @returns remote file eg. { url: 'http://remote.server/uploaded.jpg' }
     */
+    attributes: {
+      class: 'test'
+    },
     upload (files) {
       // do ajax upload, and return the url of uploaded image
       return new Promise(resolve => {

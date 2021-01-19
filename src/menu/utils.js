@@ -55,7 +55,18 @@ export function cmdItem(cmd, options) {
     run: cmd
   }
   for (const prop in options) passedOptions[prop] = options[prop]
-  if ((!options.enable || options.enable === true) && !options.select) { passedOptions[options.enable ? 'enable' : 'select'] = state => cmd(state) }
+  if ((!options.enable || options.enable === true) && !options.select) {
+    passedOptions[options.enable ? 'enable' : 'select'] = state => {
+      return cmd(state)
+    }
+  }
+
+  // custom menu disable behavior
+  if (options.disable) {
+    passedOptions.enable = (state) => {
+      return !options.disable(state)
+    }
+  }
 
   return new MenuItem(passedOptions)
 }
@@ -69,7 +80,7 @@ export function markActive(state, type) {
   }
 }
 
-export function markItem(markType, options) {
+export function markItem(markType, options = {}) {
   const passedOptions = {
     active(state) { return markActive(state, markType) },
     enable: true
@@ -117,6 +128,24 @@ export function linkItem(markType, title, icon) {
 
 export function wrapListItem(nodeType, options) {
   return cmdItem(wrapInList(nodeType, options.attrs), options)
+}
+
+export function wrapEnable(original, options) {
+  const temp = { ...original }
+
+  if (options.disable) {
+    const old = original.enable
+
+    temp.enable = (state) => {
+      if (options.disable(state)) {
+        return false
+      }
+
+      return old ? old(state) : true
+    }
+  }
+
+  return temp
 }
 
 function hashPath(path) {

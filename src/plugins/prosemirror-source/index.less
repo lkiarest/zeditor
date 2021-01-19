@@ -1,0 +1,58 @@
+.ProseMirror-source-footer {
+  line-height: 24px;
+  font-size: 14px;
+  border-top: 1px solid #ccc;
+}
+
+.ProseMirror-source-sourcepanel {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  display: none;
+}
+
+.ProseMirror-source-footer-item {
+  padding: 2px 12px;
+  cursor: pointer;
+  user-select: none;
+
+  &[data-role="design"] {
+    background-color: #e5e5e5;
+  }
+}
+
+.ProseMirror-source-footer-item:hover {
+  background-color: #eee;
+}
+
+.ProseMirror-source-footer-source {
+  .ProseMirror-source-footer-item[data-role="design"] {
+    background-color: transparent;
+  }
+
+  .ProseMirror-source-footer-item[data-role="source"] {
+    background-color: #e5e5e5;
+  }
+}
+
+.ProseMirror-source-wrapper-source {
+  .ProseMirror-source-sourcepanel {
+    display: block;
+  }
+}
+
+.ProseMirror-source-mode-menubar {
+  .ProseMirror-menuitem {
+    opacity: 0.3;
+  }
+}
+
+.ProseMirror-menubar-source-mode-mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
