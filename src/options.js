@@ -2,7 +2,8 @@
  * default options
  */
 const DEFAULT_OPTS = {
-  editorClass: '', // class name to style the editor area
+  sourceView: false, // support html source view
+  plugins: [], // custom plugins
   menubar: [
     ['heading'],
     ['font_size', 'font_family', 'font_color', 'bg_color'],

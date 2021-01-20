@@ -53,6 +53,7 @@ create()
 
 function create() {
   editor = Editor.create(container, {
+    sourceView: true,
     // menubar: [
     //   ['heading'],
     //   ['font-size', 'font-family', 'font-color', 'bg-color'],

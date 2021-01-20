@@ -27,6 +27,8 @@ editor.destroy()
 
 ```javascript
 {
+  sourceView: false, // support source view mode
+  plugins: [], // add custom plugins (Prosemirror-Plugins)
   menubar: [
     ['heading'],
     ['font_size', 'font_family', 'font_color', 'bg_color'],

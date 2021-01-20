@@ -76,14 +76,21 @@ const create = (container = document.body, options = {}) => {
     keymap(buildKeymap(editorSchema)),
     keymap(baseKeymap),
     prosemirrorDropcursor.dropCursor(),
-    prosemirrorGapcursor.gapCursor(),
-    sourcePlugin({
+    prosemirrorGapcursor.gapCursor()
+  ]
+
+  if (options.sourceView) {
+    plugins.push(sourcePlugin({
       text: {
         design: '设计',
         source: '源码'
       }
-    })
-  ]
+    }))
+  }
+
+  if (options.plugins && options.plugins.length > 0) {
+    plugins.push(...options.plugins)
+  }
 
   let state = EditorState.create({
     schema: editorSchema,
